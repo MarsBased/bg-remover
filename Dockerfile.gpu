@@ -7,6 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     python3.10 \
     python3-pip \
+    libcublas12 \
+    libcublas-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -15,8 +17,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Instalar rembg con soporte GPU
-RUN pip3 install --no-cache-dir "rembg[gpu]"
+# Instalar rembg con soporte GPU y TensorRT
+RUN pip3 install --no-cache-dir "rembg[gpu]" onnxruntime-gpu
 
 # Pre-download the model
 RUN python3 -c "from rembg import new_session; new_session('u2net')"
