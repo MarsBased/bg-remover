@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   bg-remover:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu
     ports:
       - "8000:8000"
     volumes:

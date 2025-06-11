@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  bg-remover:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu] 
