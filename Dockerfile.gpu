@@ -1,14 +1,12 @@
-FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+FROM python:3.9-slim
 
 # Evitar interacciones durante la instalación
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Instalar Python y dependencias necesarias
+# Instalar dependencias necesarias para CUDA
 RUN apt-get update && apt-get install -y \
-    python3.10 \
-    python3-pip \
-    libcublas12 \
-    libcublas-dev \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -17,8 +15,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Instalar rembg con soporte GPU y TensorRT
-RUN pip3 install --no-cache-dir "rembg[gpu]" onnxruntime-gpu
+# Instalar rembg con soporte GPU
+RUN pip3 install --no-cache-dir "rembg[gpu]"
 
 # Pre-download the model
 RUN python3 -c "from rembg import new_session; new_session('u2net')"
