@@ -44,6 +44,7 @@ async def remove_background(image_url: str):
     """
     try:
         # Download image from URL
+        print(f"Downloading image from URL: {image_url}")
         response = requests.get(image_url)
         if response.status_code != 200:
             raise HTTPException(status_code=400, detail="Could not download image from URL")
